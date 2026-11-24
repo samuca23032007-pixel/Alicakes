@@ -1,0 +1,1193 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>AliCakes Confeitaria Artesanal</title><meta name="claude:viewport-fit-sides" content="cover"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito:wght@400;600;700;800&family=Parisienne&display=swap"><style id="css">
+/* ==========================================================================
+   PARTE 2 — ESTILOS
+   ========================================================================== */
+
+/* ---------- 2.1 Cores e fontes (tema claro) ----------
+   Para mudar a identidade visual, altere principalmente --accent (cor dos
+   botões e títulos), --rose (detalhes), --blush (fundos suaves) e --bg (fundo). */
+:root{
+  --bg:#fff6f8;          /* fundo da página */
+  --surface:#ffffff;     /* fundo de cards, barra superior e painéis */
+  --ink:#4b2d3a;         /* cor do texto */
+  --muted:#85626f;       /* texto secundário */
+  --line:#f4d3de;        /* bordas finas */
+  --blush:#fde7ee;       /* rosa bem claro (fundo das imagens, hover) */
+  --rose:#e0799c;        /* rosa de detalhe (ícones, contador) */
+  --accent:#b83f69;      /* rosa forte: botões, títulos, preços */
+  --accent-ink:#ffffff;  /* cor do texto sobre o --accent */
+  --champ:#c9a46a;       /* dourado champanhe: ornamentos pequenos */
+  --badge-bg:#fff0d4;    /* selo de edição especial (fundo) */
+  --badge-ink:#7d5410;   /* selo de edição especial (texto) */
+  --danger:#b3261e;      /* botão de excluir */
+  --ok:#2f7a4f;
+  --f-brand:'Parisienne','Snell Roundhand',cursive;                       /* nome da marca */
+  --f-head:'Cormorant Garamond',Georgia,'Times New Roman',serif;          /* títulos */
+  --f-body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;        /* texto */
+}
+
+/* ---------- 2.2 Tema escuro ----------
+   Aplicado automaticamente quando o aparelho do cliente está no modo escuro.
+   Repete as mesmas variáveis com valores escuros. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#241519; --surface:#301c22; --ink:#fbe8ef; --muted:#c9a3b1; --line:#4b2c37; --blush:#3d2530;
+    --rose:#f08fb0; --accent:#f08fb0; --accent-ink:#3a1020; --champ:#d9b980;
+    --badge-bg:#4a3820; --badge-ink:#f2d9a6; --danger:#ff9a93; --ok:#8fd4aa;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#241519; --surface:#301c22; --ink:#fbe8ef; --muted:#c9a3b1; --line:#4b2c37; --blush:#3d2530;
+  --rose:#f08fb0; --accent:#f08fb0; --accent-ink:#3a1020; --champ:#d9b980;
+  --badge-bg:#4a3820; --badge-ink:#f2d9a6; --danger:#ff9a93; --ok:#8fd4aa;
+  color-scheme:dark;
+}
+
+/* ---------- 2.3 Base (vale para a página inteira) ---------- */
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body);margin:0;-webkit-text-size-adjust:100%}
+/* Faixa no topo do celular (área do relógio/bateria) pintada com a cor da barra */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--surface);z-index:30}
+h1,h2,h3{font-family:var(--f-head);font-weight:600;line-height:1.1;margin:0;text-wrap:balance}
+p{margin:0}
+a{color:var(--accent)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}   /* anel de foco para navegação por teclado */
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.muted{color:var(--muted)}
+.small{font-size:.875rem}
+
+/* ---------- 2.4 Barra superior (appbar) ---------- */
+.appbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+/* Borda "de glacê": semicírculos repetidos logo abaixo da barra */
+.appbar::after{content:"";position:absolute;left:0;right:0;top:100%;height:11px;pointer-events:none;
+  background:radial-gradient(circle at 10px 0,var(--surface) 9.5px,transparent 10.5px) 0 0/20px 11px repeat-x}
+.bar-in{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:10px;padding-bottom:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:8px;text-decoration:none;color:var(--accent)}
+.brand b{font:400 2.1rem/1 var(--f-brand)}                    /* nome em letra cursiva */
+.brand span{font:600 .7rem/1 var(--f-body);letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.tabs{display:flex;gap:6px}
+.tab{position:relative;display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;text-decoration:none;color:var(--ink);font-weight:700;font-size:.95rem;border:1px solid transparent}
+.tab:hover{background:var(--blush)}
+.tab[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}   /* aba selecionada */
+.count{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--rose);color:#fff;font-size:.75rem;font-weight:700}
+.tab[aria-current="page"] .count{background:var(--accent-ink);color:var(--accent)}
+/* No celular as abas ocupam a linha toda, divididas por igual */
+@media (max-width:520px){
+  .tabs{width:100%}
+  .tab{flex:1;justify-content:center;padding:8px 8px}
+}
+
+/* ---------- 2.5 Conteúdo geral das telas ---------- */
+.main{padding-top:34px;padding-bottom:56px;display:flex;flex-direction:column;gap:28px}
+.intro{display:flex;flex-direction:column;gap:8px}                      /* título + frase no topo de cada tela */
+.intro h1{font-size:clamp(2.2rem,7vw,3.4rem);color:var(--accent);font-style:italic;font-weight:500}
+.intro p{max-width:56ch;color:var(--muted)}
+.orn{display:flex;align-items:center;gap:10px;color:var(--champ);margin-top:6px}   /* ornamento dourado (traço, losango, traço) */
+.orn::before,.orn::after{content:"";height:1px;width:48px;background:currentColor;opacity:.7}
+.orn i{width:7px;height:7px;transform:rotate(45deg);background:currentColor}
+.notice{background:var(--blush);border:1px solid var(--line);border-radius:16px;padding:12px 16px}   /* avisos */
+.notice.warn{border-color:var(--rose)}
+
+/* ---------- 2.6 Vitrine: filtros e cards de produto ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:8px}                              /* botões de categoria */
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:600;font-size:.9rem}
+.chip:hover{border-color:var(--rose)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.sec{display:flex;flex-direction:column;gap:14px}                        /* uma seção = título da categoria + grade */
+.sec>h2{font-size:1.9rem;display:flex;align-items:baseline;gap:10px}
+.sec>h2 small{font:600 .75rem var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--champ)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:18px}   /* colunas se ajustam à largura */
+.pcard{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden;min-width:0}
+.media{position:relative;aspect-ratio:4/3;max-width:100%;background:radial-gradient(circle at 30% 25%,var(--blush),var(--bg) 75%);display:grid;place-items:center;color:var(--rose);overflow:hidden;min-height:0}
+.media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}        /* foto do produto */
+.ico{width:46%;max-width:110px;display:block}                            /* ícone desenhado (quando não há foto) */
+.ico svg{width:100%;height:auto;display:block}
+.badge{position:absolute;top:12px;left:12px;background:var(--badge-bg);color:var(--badge-ink);font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.04em}
+.pbody{display:flex;flex-direction:column;gap:8px;padding:16px;flex:1;min-width:0}
+.pbody h3{font-size:1.4rem}
+.desc{color:var(--muted);font-size:.92rem;flex:1}
+.pfoot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:4px}
+.price{font:600 1.35rem var(--f-head);font-variant-numeric:tabular-nums;color:var(--accent)}
+
+/* ---------- 2.7 Botões, contador de quantidade e campos de formulário ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:10px 20px;border-radius:999px;font-weight:700;cursor:pointer;text-decoration:none;min-height:44px}
+.btn:hover{filter:brightness(1.06)}
+.btn[disabled]{opacity:.55;cursor:default}
+.btn.ghost{background:transparent;color:var(--accent)}                   /* botão só com contorno */
+.btn.sm{padding:6px 14px;min-height:36px;font-size:.9rem}               /* botão pequeno */
+.btn.danger{border-color:var(--danger);color:var(--danger);background:transparent}
+.btn.danger.armed{background:var(--danger);color:var(--surface)}         /* "Confirmar exclusão" */
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:var(--surface)}   /* − 1 + */
+.stepper button{width:36px;height:36px;border:0;background:transparent;font-size:1.15rem;cursor:pointer;border-radius:999px;color:var(--accent);font-weight:700}
+.stepper button:hover{background:var(--blush)}
+.stepper output{min-width:26px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:16px;min-width:0}   /* bloco de formulário */
+.panel>h2{font-size:1.6rem;color:var(--accent)}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field label,.field .lbl{font-weight:700;font-size:.88rem}
+.field small{color:var(--muted)}
+input[type=text],input[type=tel],input[type=date],input[type=number],select,textarea{width:100%;min-width:0;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 12px;font-size:16px}
+textarea{resize:vertical;min-height:84px}
+.radios{display:flex;gap:10px;flex-wrap:wrap}                            /* Retirada / Entrega */
+.radios label{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer;font-weight:600}
+.radios input{accent-color:var(--accent)}
+.check{display:flex;align-items:center;gap:8px;font-weight:600}
+.check input{accent-color:var(--accent);width:18px;height:18px}
+
+/* ---------- 2.8 Tela de agendamento ---------- */
+.items{display:flex;flex-direction:column}
+.item{display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}   /* linha do pedido */
+.item:first-child{border-top:0}
+.item .nm{font-weight:700;min-width:0;overflow-wrap:anywhere}
+.item .sub{color:var(--muted);font-size:.88rem}
+.item .lt{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+.total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:14px;font-family:var(--f-head);font-size:1.5rem;font-weight:600}
+.total span:last-child{color:var(--accent);font-variant-numeric:tabular-nums}
+.errs{border:1px solid var(--danger);color:var(--danger);border-radius:14px;padding:10px 16px;font-weight:600}   /* erros de validação */
+.errs ul{margin:0;padding-left:18px}
+.empty{text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;padding:44px 22px}      /* "pedido vazio" */
+.empty h2{font-size:1.8rem}
+.empty .ico{width:80px;color:var(--rose)}
+.summary{display:grid;grid-template-columns:auto 1fr;gap:8px 16px}      /* resumo na etapa de revisão */
+.summary dt{color:var(--muted);font-weight:700}
+.summary dd{margin:0;overflow-wrap:anywhere}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.hint{color:var(--muted);font-size:.9rem}
+
+/* ---------- 2.9 Painel da confeiteira ---------- */
+.arow{border:1px solid var(--line);border-radius:18px;background:var(--bg);overflow:hidden}      /* uma linha de produto */
+.arow-head{display:flex;align-items:center;gap:12px;padding:10px 12px}
+.thumb{width:52px;height:52px;border-radius:12px;overflow:hidden;background:var(--blush);display:grid;place-items:center;color:var(--rose);flex:none}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb .ico{width:30px}
+.ainfo{display:flex;flex-direction:column;min-width:0;flex:1}
+.ainfo strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.aact{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.aedit{border-top:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:14px;background:var(--surface)}   /* formulário de edição do produto */
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:.75rem;font-weight:700;background:var(--blush);color:var(--muted)}
+.savebar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);border-top:1px solid var(--rose);   /* barra "Salvar e publicar" fixa embaixo */
+  padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.savebar p{font-weight:600;min-width:0}
+
+/* ---------- 2.10 Rodapé e extras ---------- */
+.foot{border-top:1px solid var(--line);padding-top:22px;padding-bottom:32px;color:var(--muted);font-size:.9rem;text-align:center}
+.foot b{font:400 1.6rem var(--f-brand);color:var(--accent);display:block}
+/* Animação leve ao passar o mouse nos cards (desligada para quem prefere sem movimento) */
+@media (prefers-reduced-motion:no-preference){
+  .pcard{transition:transform .2s ease,border-color .2s ease}
+  .pcard:hover{transform:translateY(-3px);border-color:var(--rose)}
+}
+
+/* ---------- 2.11 Novidades desta versão: calculadora de fatias e pacotes de brigadeiro ---------- */
+.sec>.cake{gap:20px}
+.cake-photo{aspect-ratio:16/6;max-width:100%;border-radius:16px;overflow:hidden;position:relative;background:var(--blush)}
+.cake-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.cake-head{display:flex;gap:16px;align-items:center}
+.cake-head .ico{width:64px;max-width:64px;flex:none;color:var(--rose)}
+.cake-head h2{font-size:1.9rem;color:var(--accent)}
+.cake-head p{max-width:60ch}
+.cake-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:26px;align-items:start}
+@media (max-width:780px){.cake-grid{grid-template-columns:minmax(0,1fr)}}
+.cake-col{display:flex;flex-direction:column;gap:14px;min-width:0}
+.cake-col>h3{font-size:1.35rem}
+.tiers{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,128px),1fr));gap:8px}
+.tier{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:14px;padding:9px 12px;cursor:pointer;min-width:0}
+.tier:hover{border-color:var(--rose)}
+.tier b{font:600 1.05rem var(--f-head)}
+.tier span{color:var(--accent);font-weight:700;font-size:.9rem;font-variant-numeric:tabular-nums}
+.tier[aria-pressed="true"]{border-color:var(--accent);background:var(--blush);box-shadow:inset 0 0 0 1px var(--accent)}
+.result{display:flex;flex-direction:column;gap:8px;background:var(--blush);border:1px solid var(--line);border-radius:18px;padding:16px}
+.result .rlabel{font-weight:700}
+.result .big{font:600 2.3rem/1 var(--f-head);color:var(--accent);font-variant-numeric:tabular-nums}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:8px;margin-top:4px}
+.opt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:8px 12px;cursor:pointer;font-size:.88rem}
+.opt span{color:var(--muted);font-weight:600}
+.opt b{font-variant-numeric:tabular-nums}
+.opt[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.field .lbl{display:block}
+.optlist{display:flex;flex-direction:column;gap:8px}
+.optlist label{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:14px;padding:10px 14px;cursor:pointer;background:var(--bg)}
+.optlist label:has(input:checked){border-color:var(--accent);background:var(--blush)}
+.optlist .ol{display:flex;align-items:center;gap:10px;font-weight:600}
+.optlist input{accent-color:var(--accent)}
+.optlist b{color:var(--accent);font-variant-numeric:tabular-nums}
+.flavors{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr));gap:6px 12px}
+.flavors .check{font-weight:600;font-size:.92rem;min-width:0}
+.pill.novo{background:var(--badge-bg);color:var(--badge-ink)}
+.pre{white-space:pre-line}
+.qty{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.qty .lt{font-weight:700;font-variant-numeric:tabular-nums}
+.rowsed{display:flex;flex-direction:column;gap:10px}
+.redit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:10px;align-items:end}
+@media (max-width:520px){.redit{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.redit .btn{grid-column:1/-1;justify-self:start}}
+.pcard .hint:empty,.cake .hint:empty{display:none}
+.ifood{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 16px}
+.ifood p{font-weight:600;min-width:0}
+.btn .ic{display:inline-flex;width:20px;height:20px;flex:none}
+.btn .ic svg{width:100%;height:100%;display:block}
+.foot .btn{margin-top:10px}
+</style><div id="root"></div><script type="application/json" id="state">{"v":2,"sample":false,"settings":{"name":"AliCakes","whatsapp":"(19) 98129 - 4320","leadDays":2,"slots":["Manhã (9h às 12h)","Tarde (13h às 17h)"],"notice":"Todos os doces são produzidos sob encomenda, com ingredientes de qualidade.","location":"Rua Abunã, 102 - Vila Aeroporto, Campinas","ifood":"https://www.ifood.com.br/delivery/campinas-sp/alicakes-confeitaria-parque-universitario-de-viracopos/033b869f-901b-4a9c-a476-0cc80cf1a894"},"products":[{"id":"p-bolos","kind":"fatias","name":"Bolos decorados","cat":"Bolos decorados","desc":"Recheios de brigadeiro, mousses ou geleias, com cobertura de chantininho (ou brigadeiro, para quem preferir).","badge":"","on":true,"img":"","tiers":[{"n":25,"price":185},{"n":30,"price":215},{"n":40,"price":255},{"n":50,"price":295},{"n":60,"price":330},{"n":70,"price":350},{"n":80,"price":370},{"n":90,"price":410},{"n":100,"price":450}],"fillings":["Brigadeiro","Mousse","Geleia"],"toppings":["Chantininho","Brigadeiro"]},{"id":"p-brig-trad","kind":"opcoes","name":"Brigadeiros tradicionais","cat":"Brigadeiros","desc":"Feitos com 50% cacau. Brigadeiros de 20 g, em forminha nº 4 (pétala) e finalizados com granulado Melken.","badge":"","on":true,"img":"","options":[{"label":"50 unidades","price":90},{"label":"100 unidades","price":180}],"flavors":["Brigadeiro tradicional (50% cacau)","Beijinho","Bicho de pé","Dois amores","Maracujá","Limão","Café"]},{"id":"p-brig-gourmet","kind":"opcoes","name":"Brigadeiros gourmet","cat":"Brigadeiros","desc":"Sabores especiais. Brigadeiros de 20 g, em forminha nº 4 (pétala) e finalizados com granulado Melken.","badge":"","on":true,"img":"","options":[{"label":"50 unidades","price":110},{"label":"100 unidades","price":220}],"flavors":["Ninho com Nutella","Ferrero","Rafaello","Pistache","Paçoca","Churros","Caramelo salgado (novo)","Chocolate branco (novo)"]}]}</script><script id="app">
+/* ==========================================================================
+   PARTE 4 — COMPORTAMENTO DO SITE (JavaScript)
+
+   Mapa das seções:
+     4.1  Constantes e variáveis de estado
+     4.2  Funções utilitárias (criar elementos, dinheiro, datas, carrinho)
+     4.3  Ícones desenhados dos doces
+     4.4  Navegação entre abas
+     4.5  Cabeçalho e rodapé
+     4.6  Calculadora de fatias (bolos decorados)
+     4.7  Tela PRODUTOS (vitrine: bolos, brigadeiros e produtos simples)
+     4.8  Tela AGENDAR (formulário, validação, mensagem do WhatsApp)
+     4.9  Tela PAINEL (edição dos produtos, preços e configurações)
+     4.10 Salvar e publicar
+     4.11 Montagem da tela (render) e inicialização
+   ========================================================================== */
+(function(){
+'use strict';
+
+/* ---------- 4.1 Constantes e variáveis de estado ---------- */
+
+/* Nome usado ao republicar o site (precisa ser igual ao <title> lá em cima) */
+var TITULO='AliCakes Confeitaria Artesanal';
+
+/* Mesmo endereço de fontes do <link> do topo. Usado ao salvar. */
+var FONT_HREF='https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito:wght@400;600;700;800&family=Parisienne&display=swap';
+
+/* Estilo básico que a plataforma coloca em toda página. Necessário ao salvar. */
+var RESET=':root{color-scheme:light;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}';
+
+/* Fecha a tag de script sem escrever o texto inteiro (evita quebrar o HTML) */
+var SC='</'+'script>';
+
+/* Acima disso a calculadora não sugere combinação: o cliente fala com a confeiteira */
+var MAXCALC=600;
+
+var root=document.getElementById('root');                              // onde o site é desenhado
+var state=JSON.parse(document.getElementById('state').textContent);   // dados atuais (produtos e configurações)
+var saved=JSON.stringify(state);                                       // cópia dos dados já publicados (para saber se há mudanças)
+
+/* Carrinho: lista de linhas { key, pid, title, detail, unit, qty }
+   title = nome do item ("Bolo decorado de 40 fatias"), detail = escolhas (recheio, sabores...),
+   unit = preço de uma unidade, qty = quantidade */
+var cart=[];
+var ui={};              // estado visual de cada card (fatias digitadas, sabores marcados...)
+var tab='produtos';     // aba aberta: 'produtos', 'agendar' ou 'painel'
+var step='form';        // etapa do agendamento: 'form' (preencher) ou 'review' (revisar)
+var activeCat='Todos';  // categoria selecionada no filtro da vitrine
+var openEditor=null;    // id do produto cujo editor está aberto no Painel
+var armedDelete=null;   // id do produto aguardando segundo clique para excluir
+var canEdit=false;      // true só para quem tem permissão de editar o site
+var artifactApi=null;   // função de publicação da plataforma (usada ao salvar)
+var saving=false;       // true enquanto está publicando
+var saveMsg='';         // mensagem na barra de salvar
+var errors=[];          // erros de validação do agendamento
+
+/* Dados que o cliente digita no formulário de agendamento */
+var form={name:'',phone:'',date:'',slot:'',mode:'retirada',address:'',cutlery:'nao',notes:''};
+
+/* ---------- 4.2 Funções utilitárias ---------- */
+
+/* h('div',{class:'x'},filhos...) cria um elemento HTML.
+   Propriedades: class, html (conteúdo HTML confiável), onclick/oninput... (eventos),
+   value, checked e qualquer atributo comum. Textos são inseridos como texto puro,
+   o que impede que um nome de produto estrague a página. */
+function h(tag,props){
+  var el=document.createElement(tag);
+  var p=props||{};
+  Object.keys(p).forEach(function(k){
+    var v=p[k];
+    if(v==null||v===false) return;
+    if(k==='class') el.className=v;
+    else if(k==='html') el.innerHTML=v;
+    else if(k.indexOf('on')===0) el.addEventListener(k.slice(2),v);
+    else if(k==='value') el.value=v;
+    else if(k==='checked') el.checked=true;
+    else el.setAttribute(k,v===true?'':v);
+  });
+  for(var i=2;i<arguments.length;i++){
+    var kids=[].concat(arguments[i]);
+    kids.forEach(function(c){
+      if(c==null||c===false) return;
+      el.append(c.nodeType?c:document.createTextNode(String(c)));
+    });
+  }
+  return el;
+}
+
+var fmt=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
+function money(n){return fmt.format(Number(n)||0);}                       // 3.5 -> "R$ 3,50"
+
+/* Converte o que a dona digitou ("12,50" ou "12.50") em número */
+function parsePrice(s){
+  s=String(s).trim().replace(/[^\d,.]/g,'');
+  if(s.indexOf(',')>-1) s=s.replace(/\./g,'').replace(',','.');
+  var n=parseFloat(s);
+  return isFinite(n)&&n>=0?Math.round(n*100)/100:0;
+}
+function priceText(n){return String(n).replace('.',',');}                // 3.5 -> "3,5" (para o campo de edição)
+
+/* "1 fatia" / "2 fatias" */
+function pl(n,um,varios){return n+' '+(n===1?um:varios);}
+
+/* Só aceita fotos no formato esperado (proteção contra dados estranhos) */
+function safeImg(s){return /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(s||'')?s:'';}
+
+function byId(id){return state.products.filter(function(p){return p.id===id;})[0];}
+
+/* Datas: isoLocal gera "2026-11-25"; minDate = hoje + antecedência mínima */
+function isoLocal(d){
+  var m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+  return d.getFullYear()+'-'+m+'-'+day;
+}
+function minDate(){var d=new Date();d.setDate(d.getDate()+(Number(state.settings.leadDays)||0));return isoLocal(d);}
+function prettyDate(iso){                                                 // "2026-11-25" -> "quarta-feira, 25/11/2026"
+  var a=iso.split('-');
+  return new Date(+a[0],+a[1]-1,+a[2]).toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
+}
+
+/* Número do WhatsApp só com dígitos e com o código do Brasil (55) na frente */
+function waDigits(){
+  var d=String(state.settings.whatsapp||'').replace(/\D/g,'');
+  if(d&&d.length<=11) d='55'+d;
+  return d;
+}
+
+/* Carrinho: adiciona uma linha (ou soma na linha idêntica que já existe) */
+function addLine(pid,title,detail,unit,qty){
+  var key=[pid,title,detail,unit].join('|');
+  var f=cart.filter(function(l){return l.key===key;})[0];
+  if(f) f.qty+=qty;
+  else cart.push({key:key,pid:pid,title:title,detail:detail,unit:unit,qty:qty});
+  updateCount();
+}
+function cartLines(){return cart.filter(function(l){var p=byId(l.pid);return p&&p.on&&l.qty>0;});}
+function cartTotal(){return cartLines().reduce(function(s,l){return s+l.unit*l.qty;},0);}
+function cartCount(){return cartLines().reduce(function(s,l){return s+l.qty;},0);}
+
+/* Há alterações ainda não publicadas? */
+function dirty(){return JSON.stringify(state)!==saved;}
+
+/* Sabores podem terminar com "(novo)" para ganhar o selo NOVO */
+function isNovo(s){return /\(novo\)\s*$/i.test(s);}
+function cleanFlavor(s){return String(s).replace(/\s*\(novo\)\s*$/i,'');}
+
+/* ---------- 4.3 Ícones dos doces ----------
+   Desenhos simples usados quando o produto não tem foto. */
+function svg(inner){return '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+inner+'</svg>';}
+var ICONS={
+  bolo:svg('<path d="M12 50h40"/><path d="M16 50V36h32v14"/><path d="M20 36V26h24v10"/><path d="M16 42c3 3 6 3 8 0s5-3 8 0 5 3 8 0 5 3 8 0"/><path d="M32 26v-6"/><path d="M32 12c3 3 3 5 0 8-3-3-3-5 0-8z"/>'),
+  cupcake:svg('<path d="M20 36h24l-3 16H23z"/><path d="M17 36c-2-8 4-12 9-12 1-6 11-6 12 0 5 0 11 4 9 12z"/><path d="M27 41v7M32 41v7M37 41v7"/><circle cx="32" cy="15" r="2.5"/>'),
+  docinho:svg('<circle cx="32" cy="30" r="14"/><path d="M23 26l3 2M35 21l2 3M40 33l3 1M25 36l2 3M32 30l1 3"/><path d="M19 46h26l-3 8H22z"/>'),
+  pote:svg('<path d="M20 26h24l-3 26H23z"/><path d="M20 26c0-6 5-8 12-8s12 2 12 8"/><path d="M24 35h16M25 43h14"/><circle cx="32" cy="12" r="3"/>'),
+  torta:svg('<path d="M10 42l44-12v20H10z"/><path d="M10 42l44-12"/><path d="M10 47h44"/><circle cx="40" cy="22" r="3"/>'),
+  presente:svg('<rect x="12" y="28" width="40" height="24" rx="2"/><path d="M10 22h44v6H10z"/><path d="M32 22v30"/><path d="M32 22c-6 0-10-3-8-7s8-2 8 7zm0 0c6 0 10-3 8-7s-8-2-8 7z"/>'),
+  sacola:svg('<path d="M14 22h36l-3 30H17z"/><path d="M24 22v-4a8 8 0 0 1 16 0v4"/><path d="M25 32c1 4 4 6 7 6s6-2 7-6"/>'),
+  coracao:svg('<path d="M32 52C14 40 12 28 18 22c5-5 12-3 14 3 2-6 9-8 14-3 6 6 4 18-14 30z"/>')
+};
+/* Escolhe o ícone pelo tipo do produto e, se for simples, pelo texto da categoria + nome */
+function iconFor(p){
+  if(p.kind==='fatias') return ICONS.bolo;
+  if(p.kind==='opcoes') return ICONS.docinho;
+  var t=((p.cat||'')+' '+(p.name||'')).toLowerCase();
+  if(/cupcake|muffin/.test(t)) return ICONS.cupcake;
+  if(/pote|copo|mousse/.test(t)) return ICONS.pote;
+  if(/presente|caixa|kit/.test(t)) return ICONS.presente;
+  if(/torta|fatia/.test(t)) return ICONS.torta;
+  if(/bolo|panetone|naked/.test(t)) return ICONS.bolo;
+  if(/brigadeiro|beijinho|docinho|trufa|bombom|doce/.test(t)) return ICONS.docinho;
+  return ICONS.coracao;
+}
+
+/* Botão que leva à página da loja no iFood (só aparece se o link começar com https://) */
+function ifoodLink(cls){
+  var u=String(state.settings.ifood||'').trim();
+  if(!/^https:\/\//.test(u)) return null;
+  return h('a',{class:cls,href:u,target:'_blank',rel:'noopener noreferrer'},h('span',{class:'ic',html:ICONS.sacola}),'Pedir pelo iFood');
+}
+
+/* ---------- 4.4 Navegação entre abas ----------
+   A aba aberta fica no endereço (#produtos, #agendar, #painel). */
+function route(){
+  var t=(location.hash||'').slice(1);
+  var next=(t==='agendar'||(t==='painel'&&canEdit))?t:'produtos';   // #painel só vale para quem pode editar
+  if(next!==tab||!root.firstChild){tab=next;render();window.scrollTo(0,0);}
+}
+window.addEventListener('hashchange',route);
+
+/* ---------- 4.5 Cabeçalho (appbar) e rodapé ---------- */
+
+/* Barra superior: marca à esquerda, abas à direita. A aba Agendar mostra
+   a quantidade de itens no pedido; a aba Painel só existe para quem edita. */
+function header(){
+  var n=cartCount();
+  var tabs=[['produtos','Produtos'],['agendar','Agendar']];
+  if(canEdit) tabs.push(['painel','Painel']);
+  return h('header',{class:'appbar'},
+    h('div',{class:'wrap bar-in'},
+      h('a',{class:'brand',href:'#produtos','aria-label':(state.settings.name||'AliCakes')+', confeitaria artesanal, início'},
+        h('b',null,state.settings.name||'AliCakes'),h('span',null,'confeitaria artesanal')),
+      h('nav',{class:'tabs','aria-label':'Principal'},
+        tabs.map(function(t){
+          return h('a',{class:'tab',href:'#'+t[0],'aria-current':tab===t[0]?'page':null},
+            t[1],
+            t[0]==='agendar'&&n>0?h('span',{class:'count','aria-label':n+' itens no pedido'},String(n)):null);
+        }))));
+}
+
+/* Atualiza só a bolinha com a quantidade (sem redesenhar a tela toda) */
+function updateCount(){
+  var a=root.querySelector('a.tab[href="#agendar"]');
+  if(!a) return;
+  var c=a.querySelector('.count');
+  var n=cartCount();
+  if(n>0){
+    if(!c){c=h('span',{class:'count'});a.append(c);}
+    c.textContent=String(n);
+  }else if(c){c.remove();}
+}
+
+function footer(){
+  return h('footer',{class:'wrap foot'},
+    h('b',null,state.settings.name||'AliCakes'),
+    state.settings.location?h('p',null,state.settings.location):null,
+    h('p',null,'Pedidos combinados pelo WhatsApp com a confeiteira.'),
+    ifoodLink('btn ghost sm'));
+}
+
+/* ---------- 4.6 Calculadora de fatias (bolos decorados) ----------
+   A tabela de preços fica em p.tiers: [{n:25, price:185}, ...].
+   A calculadora procura o menor bolo da tabela que serve a quantidade pedida. */
+
+/* Tabela ordenada da menor para a maior, ignorando linhas incompletas */
+function sortedTiers(p){
+  return (p.tiers||[]).map(function(t){return {n:Math.round(Number(t.n)),price:Number(t.price)};})
+    .filter(function(t){return t.n>0&&isFinite(t.price)&&t.price>=0;})
+    .sort(function(a,b){return a.n-b.n;});
+}
+
+/* Sugere o bolo para n fatias.
+   - n dentro da tabela: o bolo da tabela com fatias >= n (up) e o bolo logo abaixo (low)
+   - n maior que o maior bolo: combinação de bolos mais barata que cobre n fatias */
+function suggest(n,tiers){
+  if(!tiers.length||!(n>0)) return null;
+  var max=tiers[tiers.length-1].n,min=tiers[0].n;
+  if(n<=max){
+    var up=tiers.filter(function(t){return t.n>=n;})[0];
+    var low=tiers.filter(function(t){return t.n<n;}).pop()||null;
+    return {kind:'single',up:up,low:low,under:n<min};
+  }
+  if(n>MAXCALC) return {kind:'toomany'};
+  var best=[0],pick=[null],i,j;
+  for(i=1;i<=n;i++){                                          // menor custo para cobrir i fatias
+    best[i]=Infinity;
+    for(j=0;j<tiers.length;j++){
+      var c=best[Math.max(0,i-tiers[j].n)]+tiers[j].price;
+      if(c<best[i]){best[i]=c;pick[i]=j;}
+    }
+  }
+  var parts={},k=n;
+  while(k>0){
+    var t=tiers[pick[k]];
+    parts[t.n]=parts[t.n]||{t:t,q:0};
+    parts[t.n].q++;
+    k=Math.max(0,k-t.n);
+  }
+  var list=Object.keys(parts).map(function(x){return parts[x];}).sort(function(a,b){return b.t.n-a.t.n;});
+  var slices=list.reduce(function(s,x){return s+x.t.n*x.q;},0);
+  var bolos=list.reduce(function(s,x){return s+x.q;},0);
+  return {kind:'combo',list:list,slices:slices,bolos:bolos,total:best[n]};
+}
+
+/* Card grande dos bolos: tabela de preços + calculadora + escolhas de recheio */
+function cakeCard(p){
+  var st=ui[p.id]=ui[p.id]||{n:'30',filling:'',topping:'',note:'',pick:null};
+  var fills=p.fillings||[],tops=p.toppings||[];
+  if(fills.indexOf(st.filling)<0) st.filling=fills[0]||'';
+  if(tops.indexOf(st.topping)<0) st.topping=tops[0]||'';
+  var tiers=sortedTiers(p);
+  var img=safeImg(p.img);
+  var cur=null;                                                          // sugestão que está na tela
+  var resBox=h('div',{class:'result','aria-live':'polite'});
+  var msg=h('p',{class:'hint',role:'status'});
+  var addBtn=h('button',{class:'btn',type:'button',onclick:function(){add();}},'Adicionar ao pedido');
+
+  /* botões da tabela de preços: clicar preenche a quantidade de fatias */
+  var tierBtns=tiers.map(function(t){
+    var b=h('button',{class:'tier',type:'button',onclick:function(){
+      st.n=String(t.n);st.pick=null;input.value=st.n;paint();
+    }},h('b',null,pl(t.n,'fatia','fatias')),h('span',null,money(t.price)));
+    b._n=t.n;
+    return b;
+  });
+  var input=h('input',{type:'number',id:'fatias-'+p.id,min:'1',max:String(MAXCALC),step:'1',inputmode:'numeric',value:st.n,
+    oninput:function(e){st.n=e.target.value;st.pick=null;paint();}});
+
+  function chosen(s){return (s.low&&st.pick===s.low.n)?s.low:s.up;}     // bolo marcado (sugerido ou o menor)
+  function mark(n){tierBtns.forEach(function(b){b.setAttribute('aria-pressed',String(b._n===n));});}
+  function diff(sel,n){
+    if(sel>n) return ' · sobram '+pl(sel-n,'fatia','fatias');
+    if(sel<n) return ' · '+pl(n-sel,'fatia a menos','fatias a menos');
+    return '';
+  }
+
+  /* Redesenha só o resultado (o campo de número mantém o foco) */
+  function paint(){
+    var n=parseInt(st.n,10),s=suggest(n,tiers);
+    cur=s;msg.textContent='';resBox.textContent='';
+    if(!s){
+      resBox.append(h('p',{class:'muted'},'Digite quantas fatias você quer e veja o bolo e o valor sugeridos.'));
+      addBtn.disabled=true;mark(null);return;
+    }
+    if(s.kind==='toomany'){
+      resBox.append(h('p',null,'Para mais de '+MAXCALC+' fatias, combine direto com a confeiteira pelo WhatsApp.'));
+      addBtn.disabled=true;mark(null);return;
+    }
+    addBtn.disabled=false;
+    if(s.kind==='single'){
+      var t=chosen(s),exact=s.up.n===n;
+      mark(t.n);
+      resBox.append(
+        h('p',{class:'rlabel'},exact?'Bolo de '+pl(t.n,'fatia','fatias'):s.under?'O menor bolo da tabela tem '+pl(s.up.n,'fatia','fatias'):'Para '+pl(n,'fatia','fatias')+', sugerimos o bolo de '+pl(s.up.n,'fatia','fatias')),
+        h('div',{class:'big'},money(t.price)),
+        h('p',{class:'muted small'},'Bolo de '+pl(t.n,'fatia','fatias')+' · '+money(t.price/t.n)+' por fatia'+(s.under?'':diff(t.n,n))));
+      if(!exact&&s.low){                                                  // alternativa menor, mais barata
+        var alt=function(tt,label){
+          return h('button',{class:'opt',type:'button','aria-pressed':String(tt===t),onclick:function(){st.pick=tt.n;paint();}},
+            h('span',null,label),h('b',null,pl(tt.n,'fatia','fatias')+' · '+money(tt.price)));
+        };
+        resBox.append(h('div',{class:'opts',role:'group','aria-label':'Escolher o tamanho do bolo'},alt(s.up,'Sugerido'),alt(s.low,'Menor')));
+      }
+    }else{
+      mark(null);
+      var parts=s.list.map(function(x){return (x.q>1?x.q+' × ':'')+pl(x.t.n,'fatia','fatias');}).join(' + ');
+      resBox.append(
+        h('p',{class:'rlabel'},'Para '+pl(n,'fatia','fatias')+', sugerimos '+pl(s.bolos,'bolo','bolos')),
+        h('div',{class:'big'},money(s.total)),
+        h('p',{class:'muted small'},parts+' = '+pl(s.slices,'fatia','fatias')+' · '+money(s.total/s.slices)+' por fatia'+diff(s.slices,n)),
+        h('p',{class:'hint'},'Valor estimado somando os bolos da tabela. A confeiteira confirma.'));
+    }
+  }
+
+  /* Coloca o bolo (ou a combinação) escolhido no pedido */
+  function add(){
+    if(!cur||cur.kind==='toomany') return;
+    var n=parseInt(st.n,10);
+    var det=[];
+    if(st.filling) det.push('Recheio: '+st.filling);
+    if(st.topping) det.push('Cobertura: '+st.topping);
+    if(st.note.trim()) det.push('Detalhes: '+st.note.trim());
+    if(cur.kind==='single'){
+      var t=chosen(cur),d=det.slice();
+      if(t.n!==n) d.unshift('Pedido para '+pl(n,'fatia','fatias'));
+      addLine(p.id,'Bolo decorado de '+pl(t.n,'fatia','fatias'),d.join('\n'),t.price,1);
+    }else{
+      cur.list.forEach(function(x){
+        addLine(p.id,'Bolo decorado de '+pl(x.t.n,'fatia','fatias'),['Pedido para '+pl(n,'fatia','fatias')+' (combinação de bolos)'].concat(det).join('\n'),x.t.price,x.q);
+      });
+    }
+    msg.textContent='Adicionado ao pedido. Confira na aba Agendar.';
+  }
+
+  function choice(name,list,key){                                         // grupo de botões de rádio
+    return h('div',{class:'radios',role:'radiogroup','aria-label':name},list.map(function(v,i){
+      return h('label',null,h('input',{type:'radio',name:key+'-'+p.id,value:v,checked:st[key]===v,onchange:function(){st[key]=v;}}),v);
+    }));
+  }
+
+  var out=h('section',{class:'panel cake'},
+    img?h('div',{class:'cake-photo'},h('img',{src:img,alt:p.name,loading:'lazy'})):null,
+    h('div',{class:'cake-head'},
+      h('div',{class:'ico',html:ICONS.bolo}),
+      h('div',null,p.name!==p.cat?h('h2',null,p.name):null,p.desc?h('p',{class:'muted'},p.desc):null)),
+    h('div',{class:'cake-grid'},
+      h('div',{class:'cake-col'},
+        h('h3',null,'Tabela de preços'),
+        h('div',{class:'tiers',role:'group','aria-label':'Tabela de preços por quantidade de fatias'},tierBtns)),
+      h('div',{class:'cake-col'},
+        field('Quantas fatias você quer?','fatias-'+p.id,input,'Escolha na tabela ou digite o número de convidados.'),
+        resBox,
+        fills.length?h('div',{class:'field'},h('span',{class:'lbl'},'Recheio'),choice('Recheio',fills,'filling')):null,
+        tops.length?h('div',{class:'field'},h('span',{class:'lbl'},'Cobertura'),choice('Cobertura',tops,'topping')):null,
+        field('Sabor do recheio e detalhes (opcional)','nota-'+p.id,
+          h('textarea',{id:'nota-'+p.id,rows:'2',oninput:function(e){st.note=e.target.value;}},st.note),
+          'Ex.: mousse de maracujá, tema, texto no bolo.'),
+        h('div',{class:'actions'},addBtn),msg)));
+  paint();
+  return out;
+}
+
+/* ---------- 4.7 Tela PRODUTOS (vitrine) ---------- */
+
+/* Parte de baixo de todo card: foto ou ícone no topo */
+function media(p){
+  var img=safeImg(p.img);
+  return h('div',{class:'media'},
+    img?h('img',{src:img,alt:p.name,loading:'lazy'}):h('div',{class:'ico',html:iconFor(p)}),
+    p.badge?h('span',{class:'badge'},p.badge):null);
+}
+
+/* Brigadeiros (e outros produtos vendidos em pacotes): escolhe o pacote, a quantidade e os sabores */
+function optionsCard(p){
+  var st=ui[p.id]=ui[p.id]||{opt:0,packs:1,flavors:[]};
+  var opts=(p.options||[]).filter(function(o){return o.label&&isFinite(Number(o.price));});
+  if(st.opt>=opts.length) st.opt=0;
+  var flavors=p.flavors||[];
+  var totalEl=h('span',{class:'price'});
+  var packsOut=h('output',{'aria-live':'polite'},String(st.packs));
+  var msg=h('p',{class:'hint',role:'status'});
+  function upd(){
+    var o=opts[st.opt];
+    totalEl.textContent=o?money(o.price*st.packs):'';
+    packsOut.textContent=String(st.packs);
+  }
+  var list=h('div',{class:'optlist',role:'radiogroup','aria-label':'Tamanho do pedido de '+p.name},
+    opts.map(function(o,i){
+      return h('label',null,
+        h('span',{class:'ol'},h('input',{type:'radio',name:'opt-'+p.id,checked:st.opt===i,onchange:function(){st.opt=i;upd();}}),o.label),
+        h('b',null,money(o.price)));
+    }));
+  var stepper=h('div',{class:'stepper',role:'group','aria-label':'Quantidade de pedidos'},
+    h('button',{type:'button','aria-label':'Diminuir',onclick:function(){if(st.packs>1){st.packs--;upd();}}},'−'),
+    packsOut,
+    h('button',{type:'button','aria-label':'Aumentar',onclick:function(){if(st.packs<20){st.packs++;upd();}}},'+'));
+  var flv=flavors.length?h('div',{class:'field'},
+    h('span',{class:'lbl'},'Sabores de preferência (opcional)'),
+    h('div',{class:'flavors'},flavors.map(function(f){
+      var name=cleanFlavor(f);
+      return h('label',{class:'check'},
+        h('input',{type:'checkbox',checked:st.flavors.indexOf(name)>-1,onchange:function(e){
+          var i=st.flavors.indexOf(name);
+          if(e.target.checked&&i<0) st.flavors.push(name);
+          if(!e.target.checked&&i>-1) st.flavors.splice(i,1);
+        }}),
+        h('span',null,name),isNovo(f)?h('span',{class:'pill novo'},'Novo'):null);
+    })),
+    h('small',null,'A confeiteira confirma a combinação de sabores pelo WhatsApp.')):null;
+  upd();
+  return h('article',{class:'pcard'},
+    media(p),
+    h('div',{class:'pbody'},
+      h('h3',null,p.name),
+      p.desc?h('p',{class:'desc'},p.desc):null,
+      list,
+      h('div',{class:'field'},h('span',{class:'lbl'},'Quantidade de pedidos'),stepper),
+      flv,
+      h('div',{class:'pfoot'},totalEl,
+        h('button',{class:'btn sm',type:'button',disabled:opts.length?null:true,onclick:function(){
+          var o=opts[st.opt];
+          if(!o) return;
+          addLine(p.id,p.name+' — '+o.label,st.flavors.length?'Sabores: '+st.flavors.join(', '):'',o.price,st.packs);
+          msg.textContent='Adicionado ao pedido. Confira na aba Agendar.';
+        }},'Adicionar ao pedido')),
+      msg));
+}
+
+/* Produto simples (um preço só): botão Adicionar */
+function simpleCard(p){
+  var msg=h('p',{class:'hint',role:'status'});
+  return h('article',{class:'pcard'},
+    media(p),
+    h('div',{class:'pbody'},
+      h('h3',null,p.name),
+      p.desc?h('p',{class:'desc'},p.desc):null,
+      h('div',{class:'pfoot'},h('span',{class:'price'},money(p.price)),
+        h('button',{class:'btn sm',type:'button','aria-label':'Adicionar '+p.name+' ao pedido',onclick:function(){
+          addLine(p.id,p.name,'',p.price,1);msg.textContent='Adicionado ao pedido.';
+        }},'Adicionar')),
+      msg));
+}
+
+/* Lista de categorias na ordem em que aparecem nos produtos */
+function categories(list){
+  var seen=[];
+  list.forEach(function(p){var c=p.cat||'Outros';if(seen.indexOf(c)<0) seen.push(c);});
+  return seen;
+}
+
+/* Monta uma categoria: bolos com calculadora ocupam a linha toda; o resto vai numa grade */
+function section(c,items){
+  var cakes=items.filter(function(p){return p.kind==='fatias';});
+  var others=items.filter(function(p){return p.kind!=='fatias';});
+  return h('section',{class:'sec'},
+    h('h2',null,c),
+    cakes.map(cakeCard),
+    others.length?h('div',{class:'grid'},others.map(function(p){return p.kind==='opcoes'?optionsCard(p):simpleCard(p);})):null);
+}
+
+/* Monta a vitrine: introdução, aviso opcional, filtros e uma seção para cada categoria. */
+function viewProdutos(){
+  var avail=state.products.filter(function(p){return p.on;});   // só os produtos disponíveis
+  var cats=categories(avail);
+  if(activeCat!=='Todos'&&cats.indexOf(activeCat)<0) activeCat='Todos';
+  var out=[];
+  out.push(h('section',{class:'intro'},
+    h('h1',null,'Doces feitos com carinho'),
+    h('p',null,'Monte seu pedido de bolos e brigadeiros, agende a retirada ou a entrega e a confeiteira confirma tudo pelo WhatsApp.'),
+    h('div',{class:'orn','aria-hidden':'true'},h('i'))));
+  if(state.settings.notice) out.push(h('div',{class:'notice',role:'note'},state.settings.notice));
+  if(ifoodLink('btn')) out.push(h('div',{class:'ifood'},h('p',null,'Prefere pedir pelo aplicativo? A AliCakes também está no iFood.'),ifoodLink('btn')));
+  if(cats.length>1){                                             // botões de filtro por categoria
+    out.push(h('div',{class:'chips',role:'group','aria-label':'Filtrar por categoria'},
+      ['Todos'].concat(cats).map(function(c){
+        return h('button',{class:'chip',type:'button','aria-pressed':String(activeCat===c),onclick:function(){activeCat=c;renderMain();}},c);
+      })));
+  }
+  if(!avail.length){
+    out.push(h('div',{class:'notice'},'Os produtos aparecem aqui assim que forem cadastrados.'));
+    return out;
+  }
+  (activeCat==='Todos'?cats:[activeCat]).forEach(function(c){
+    out.push(section(c,avail.filter(function(p){return (p.cat||'Outros')===c;})));
+  });
+  return out;
+}
+
+/* ---------- 4.8 Tela AGENDAR ---------- */
+
+/* Confere o formulário e devolve a lista de problemas (vazia = tudo certo) */
+function validate(){
+  var e=[];
+  if(!cartLines().length) e.push('Adicione pelo menos um produto ao pedido.');
+  if(!form.name.trim()) e.push('Informe seu nome.');
+  if(!form.date) e.push('Escolha a data.');
+  else if(form.date<minDate()) e.push('A data precisa ter pelo menos '+state.settings.leadDays+' dia(s) de antecedência.');
+  if(!form.slot) e.push('Escolha o período.');
+  if(form.mode==='entrega'&&!form.address.trim()) e.push('Informe o endereço de entrega.');
+  return e;
+}
+
+/* Texto da mensagem que vai para o WhatsApp da dona. Para mudar o texto,
+   edite as linhas abaixo (o *texto* entre asteriscos fica em negrito no WhatsApp). */
+function buildMessage(){
+  var L=['Olá! Quero agendar um pedido na '+(state.settings.name||'AliCakes')+'.','',
+    '*Nome:* '+form.name.trim()];
+  if(form.phone.trim()) L.push('*Telefone:* '+form.phone.trim());
+  L.push('*Data:* '+prettyDate(form.date)+' — '+form.slot);
+  L.push('*Recebimento:* '+(form.mode==='entrega'?'Entrega em '+form.address.trim():'Retirada'));
+  L.push('*Colher/talher:* '+(form.cutlery==='sim'?'Sim':'Não'));
+  L.push('','*Itens:*');
+  cartLines().forEach(function(l){
+    L.push('• '+l.qty+'x '+l.title+' — '+money(l.unit*l.qty));
+    if(l.detail) l.detail.split('\n').forEach(function(d){L.push('   '+d);});
+  });
+  L.push('','*Total estimado:* '+money(cartTotal()));
+  if(form.notes.trim()) L.push('','*Observações:* '+form.notes.trim());
+  return L.join('\n');
+}
+
+/* Uma linha do pedido: nome, escolhas, preço unitário e contador de quantidade */
+function itemRow(l){
+  function setQty(q){
+    l.qty=q;
+    if(q<=0) cart=cart.filter(function(x){return x!==l;});
+    renderMain();updateCount();
+  }
+  return h('div',{class:'item'},
+    h('div',null,
+      h('div',{class:'nm'},l.title),
+      l.detail?h('div',{class:'sub pre'},l.detail):null,
+      h('div',{class:'sub'},money(l.unit)+' cada')),
+    h('div',{class:'qty'},
+      h('div',{class:'stepper',role:'group','aria-label':'Quantidade de '+l.title},
+        h('button',{type:'button','aria-label':'Diminuir',onclick:function(){setQty(l.qty-1);}},'−'),
+        h('output',null,String(l.qty)),
+        h('button',{type:'button','aria-label':'Aumentar',onclick:function(){setQty(l.qty+1);}},'+')),
+      h('span',{class:'lt'},money(l.unit*l.qty))));
+}
+
+/* Rótulo + campo (ajuda a manter o formulário consistente) */
+function field(label,id,input,hint){
+  return h('div',{class:'field'},h('label',{for:id},label),input,hint?h('small',null,hint):null);
+}
+
+/* Etapa 1: formulário. Se o pedido estiver vazio, mostra um convite para ver os produtos. */
+function viewAgendar(){
+  var lines=cartLines();
+  if(!lines.length){
+    return [h('section',{class:'panel empty'},
+      h('div',{class:'ico',html:ICONS.presente}),
+      h('h2',null,'Seu pedido está vazio'),
+      h('p',{class:'muted'},'Escolha os bolos e brigadeiros na aba Produtos e volte aqui para escolher a data.'),
+      h('a',{class:'btn',href:'#produtos'},'Ver produtos'))];
+  }
+  if(step==='review') return viewReview();
+
+  /* Campo de endereço: só aparece quando o cliente escolhe "Entrega" */
+  var addrBox=h('div',{class:'field'},
+    h('label',{for:'f-addr'},'Endereço de entrega'),
+    h('textarea',{id:'f-addr',rows:'2',oninput:function(e){form.address=e.target.value;}},form.address));
+  addrBox.hidden=form.mode!=='entrega';
+
+  function modeRadio(v,label){                                   // botão "Retirada" / "Entrega"
+    return h('label',null,h('input',{type:'radio',name:'f-mode',id:'f-mode-'+v,value:v,checked:form.mode===v,onchange:function(){
+      form.mode=v;addrBox.hidden=v!=='entrega';
+    }}),label);
+  }
+  function cutleryRadio(v,label){                                // botão "Sim" / "Não" para colher e talher
+    return h('label',null,h('input',{type:'radio',name:'f-cutlery',id:'f-cutlery-'+v,value:v,checked:form.cutlery===v,onchange:function(){
+      form.cutlery=v;
+    }}),label);
+  }
+  var slotSel=h('select',{id:'f-slot',onchange:function(e){form.slot=e.target.value;}},    // períodos vêm das configurações
+    h('option',{value:''},'Escolha o período'),
+    (state.settings.slots||[]).map(function(s){return h('option',{value:s,selected:form.slot===s?true:null},s);}));
+
+  var out=[];
+  out.push(h('section',{class:'intro'},h('h1',null,'Agendar pedido'),
+    h('p',null,'Confira os itens, escolha quando quer receber e envie para a confeiteira pelo WhatsApp.')));
+  out.push(h('section',{class:'panel'},h('h2',null,'Seu pedido'),                      // lista + total
+    h('div',{class:'items'},lines.map(itemRow)),
+    h('div',{class:'total'},h('span',null,'Total estimado'),h('span',null,money(cartTotal()))),
+    h('p',{class:'hint'},'O valor final e a disponibilidade são confirmados pela confeiteira.')));
+  out.push(h('section',{class:'panel'},h('h2',null,'Quando'),                           // data e período
+    h('div',{class:'fields'},
+      field('Data','f-date',h('input',{type:'date',id:'f-date',min:minDate(),value:form.date,oninput:function(e){form.date=e.target.value;}}),
+        'Antecedência mínima: '+state.settings.leadDays+' dia(s).'),
+      field('Período','f-slot',slotSel))));
+  out.push(h('section',{class:'panel'},h('h2',null,'Como receber'),                     // retirada ou entrega
+    h('div',{class:'radios',role:'radiogroup','aria-label':'Forma de recebimento'},modeRadio('retirada','Retirada'),modeRadio('entrega','Entrega')),
+    addrBox));
+  out.push(h('section',{class:'panel'},h('h2',null,'Precisa de colher/talher?'),         // colher e talher
+    h('div',{class:'radios',role:'radiogroup','aria-label':'Precisa de colher e talher'},cutleryRadio('sim','Sim'),cutleryRadio('nao','Não'))));
+  out.push(h('section',{class:'panel'},h('h2',null,'Seus dados'),                        // nome, telefone, observações
+    h('div',{class:'fields'},
+      field('Nome','f-name',h('input',{type:'text',id:'f-name',autocomplete:'name',value:form.name,oninput:function(e){form.name=e.target.value;}})),
+      field('Telefone (opcional)','f-phone',h('input',{type:'tel',id:'f-phone',autocomplete:'tel',value:form.phone,oninput:function(e){form.phone=e.target.value;}}))),
+    field('Observações','f-notes',h('textarea',{id:'f-notes',rows:'3',oninput:function(e){form.notes=e.target.value;}},form.notes),
+      'Tema da decoração, texto no bolo, alergias.')));
+
+  var errBox=h('div',{class:'errs',role:'alert'},                                        // erros de validação
+    h('ul',null,errors.map(function(m){return h('li',null,m);})));
+  errBox.hidden=!errors.length;
+  out.push(errBox);
+
+  out.push(h('div',{class:'actions'},h('button',{class:'btn',type:'button',onclick:function(){
+    errors=validate();                                                                   // só avança se estiver tudo certo
+    if(errors.length){renderMain();return;}
+    step='review';renderMain();window.scrollTo(0,0);
+  }},'Revisar agendamento'),h('a',{class:'btn ghost',href:'#produtos'},'Adicionar mais produtos')));
+  return out;
+}
+
+/* Etapa 2: revisão. O botão abre o WhatsApp da dona com a mensagem pronta
+   (link https://wa.me/NUMERO?text=MENSAGEM). A cliente ainda precisa tocar em "enviar". */
+function viewReview(){
+  var msg=buildMessage();
+  var digits=waDigits();
+  var url='https://wa.me/'+digits+'?text='+encodeURIComponent(msg);
+  var ta=h('textarea',{id:'f-msg',readonly:true,rows:'12','aria-label':'Mensagem que será enviada'});
+  ta.value=msg;
+  var copyBtn=h('button',{class:'btn ghost',type:'button',onclick:function(){            // botão "Copiar mensagem"
+    function fallback(){ta.focus();ta.select();copyBtn.textContent='Texto selecionado, use copiar';}
+    try{
+      navigator.clipboard.writeText(msg).then(function(){copyBtn.textContent='Mensagem copiada';},fallback);
+    }catch(e){fallback();}
+  }},'Copiar mensagem');
+  var dl=h('dl',{class:'summary'},
+    h('dt',null,'Nome'),h('dd',null,form.name.trim()),
+    h('dt',null,'Quando'),h('dd',null,prettyDate(form.date)+', '+form.slot),
+    h('dt',null,'Receber'),h('dd',null,form.mode==='entrega'?'Entrega em '+form.address.trim():'Retirada'),
+    h('dt',null,'Colher/talher'),h('dd',null,form.cutlery==='sim'?'Sim':'Não'),
+    h('dt',null,'Total'),h('dd',null,money(cartTotal())+' (estimado)'));
+  return [
+    h('section',{class:'intro'},h('h1',null,'Revise e envie'),
+      h('p',null,'Confira os dados. O pedido só vale depois que a confeiteira responder confirmando.')),
+    h('section',{class:'panel'},h('h2',null,'Resumo'),dl,
+      h('div',{class:'items'},cartLines().map(function(l){
+        return h('div',{class:'item'},
+          h('div',null,h('div',{class:'nm'},l.qty+'x '+l.title),l.detail?h('div',{class:'sub pre'},l.detail):null),
+          h('div',{class:'lt'},money(l.unit*l.qty)));
+      }))),
+    h('section',{class:'panel'},h('h2',null,'Mensagem'),ta,
+      h('div',{class:'actions'},
+        h('a',{class:'btn',href:url,target:'_blank',rel:'noopener noreferrer'},'Confirmar e enviar no WhatsApp'),
+        copyBtn,
+        h('button',{class:'btn ghost',type:'button',onclick:function(){step='form';renderMain();window.scrollTo(0,0);}},'Voltar e editar')),
+      h('p',{class:'hint'},digits?'O WhatsApp abre com a mensagem pronta. Falta só tocar em enviar.':'Escolha a conversa da confeiteira no WhatsApp para enviar a mensagem.'))
+  ];
+}
+
+/* ---------- 4.9 Tela PAINEL (só para quem pode editar) ---------- */
+
+/* Chamada a cada alteração: mostra a barra "Alterações não publicadas" */
+function touch(){renderSaveBar();}
+
+function newId(){return 'p-'+Date.now().toString(36)+Math.floor(Math.random()*1000).toString(36);}
+
+/* Sobe (-1) ou desce (+1) um produto na ordem da lista */
+function move(i,d){
+  var j=i+d;
+  if(j<0||j>=state.products.length) return;
+  var t=state.products[i];state.products[i]=state.products[j];state.products[j]=t;
+  touch();renderMain();
+}
+
+/* Reduz a foto enviada (máx. 720 px, JPEG) para o site não ficar pesado */
+function compress(file){
+  return new Promise(function(res,rej){
+    var fr=new FileReader();
+    fr.onerror=function(){rej(new Error('read'));};
+    fr.onload=function(){
+      var img=new Image();
+      img.onerror=function(){rej(new Error('img'));};
+      img.onload=function(){
+        var r=Math.min(1,720/Math.max(img.width,img.height));
+        var c=document.createElement('canvas');
+        c.width=Math.max(1,Math.round(img.width*r));c.height=Math.max(1,Math.round(img.height*r));
+        var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);
+        var q=0.8,u=c.toDataURL('image/jpeg',q);
+        while(u.length>220000&&q>0.4){q-=0.1;u=c.toDataURL('image/jpeg',q);}     // reduz a qualidade até ficar leve
+        res(u);
+      };
+      img.src=fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+
+/* Editor de linhas (tabela de fatias, pacotes de brigadeiro): cada linha tem campos
+   de texto. fields = [{label, get(item), set(item,valor), num}] */
+function listEditor(arr,fields,blank,prefix){
+  var box=h('div',{class:'rowsed'});
+  arr.forEach(function(it,i){
+    box.append(h('div',{class:'redit'},
+      fields.map(function(f,k){
+        var id=prefix+'-'+i+'-'+k;
+        return h('div',{class:'field'},h('label',{for:id},f.label),
+          h('input',{type:'text',id:id,inputmode:f.num?'decimal':null,value:f.get(it),oninput:function(e){f.set(it,e.target.value);touch();}}));
+      }),
+      h('button',{class:'btn danger sm',type:'button','aria-label':'Remover linha '+(i+1),onclick:function(){arr.splice(i,1);touch();renderMain();}},'Remover')));
+  });
+  box.append(h('div',{class:'actions'},h('button',{class:'btn ghost sm',type:'button',onclick:function(){arr.push(blank());touch();renderMain();}},'Adicionar linha')));
+  return box;
+}
+
+/* Caixa de texto com uma opção por linha (recheios, coberturas, sabores) */
+function linesField(label,id,arr,set,hint){
+  return field(label,id,h('textarea',{id:id,rows:'4',oninput:function(e){
+    set(e.target.value.split('\n').map(function(x){return x.trim();}).filter(Boolean));touch();
+  }},(arr||[]).join('\n')),hint);
+}
+
+/* Resumo de preço mostrado na linha do produto */
+function priceSummary(p){
+  var v=[];
+  if(p.kind==='fatias') v=sortedTiers(p).map(function(t){return t.price;});
+  else if(p.kind==='opcoes') v=(p.options||[]).map(function(o){return Number(o.price)||0;});
+  else v=[Number(p.price)||0];
+  if(!v.length) return 'sem preços';
+  var a=Math.min.apply(null,v),b=Math.max.apply(null,v);
+  return a===b?money(a):money(a)+' a '+money(b);
+}
+
+/* Formulário de edição de um produto (abre ao clicar em "Editar").
+   Cada campo grava direto no produto (p.name, p.price...) conforme a dona digita. */
+function editor(p,i,meta){
+  var id=p.id;
+  var photoMsg=h('small',{class:'muted',role:'status'});
+  var file=h('input',{type:'file',id:'pf-'+id,accept:'image/*',onchange:function(e){      // envio de foto
+    var f=e.target.files&&e.target.files[0];
+    if(!f) return;
+    photoMsg.textContent='Preparando foto...';
+    compress(f).then(function(u){p.img=u;touch();renderMain();},function(){photoMsg.textContent='Não consegui ler essa imagem. Tente outra foto.';});
+  }});
+  var del=h('button',{class:'btn danger sm',type:'button',onclick:function(){            // exclusão em dois cliques
+    if(armedDelete!==id){armedDelete=id;renderMain();return;}
+    state.products=state.products.filter(function(x){return x.id!==id;});
+    cart=cart.filter(function(l){return l.pid!==id;});
+    armedDelete=null;openEditor=null;touch();renderMain();updateCount();
+  }},armedDelete===id?'Confirmar exclusão':'Excluir produto');
+  if(armedDelete===id) del.classList.add('armed');
+
+  var special=[];                                                  // campos que dependem do tipo de produto
+  if(p.kind==='fatias'){
+    p.tiers=p.tiers||[];p.fillings=p.fillings||[];p.toppings=p.toppings||[];
+    special.push(
+      h('div',{class:'field'},h('span',{class:'lbl'},'Tabela de preços (fatias e valor)'),
+        listEditor(p.tiers,[
+          {label:'Fatias',num:true,get:function(t){return String(t.n);},set:function(t,v){t.n=parseInt(v,10)||0;}},
+          {label:'Valor (R$)',num:true,get:function(t){return priceText(t.price);},set:function(t,v){t.price=parsePrice(v);meta.price();}}
+        ],function(){return {n:0,price:0};},'tr-'+id)),
+      linesField('Recheios','pr-'+id,p.fillings,function(a){p.fillings=a;},'Um por linha.'),
+      linesField('Coberturas','pt-'+id,p.toppings,function(a){p.toppings=a;},'Um por linha.'));
+  }else if(p.kind==='opcoes'){
+    p.options=p.options||[];p.flavors=p.flavors||[];
+    special.push(
+      h('div',{class:'field'},h('span',{class:'lbl'},'Pacotes (nome e valor)'),
+        listEditor(p.options,[
+          {label:'Nome do pacote',get:function(o){return o.label;},set:function(o,v){o.label=v;}},
+          {label:'Valor (R$)',num:true,get:function(o){return priceText(o.price);},set:function(o,v){o.price=parsePrice(v);meta.price();}}
+        ],function(){return {label:'',price:0};},'op-'+id)),
+      linesField('Sabores','pf2-'+id,p.flavors,function(a){p.flavors=a;},'Um por linha. Escreva (novo) no fim para mostrar o selo NOVO.'));
+  }else{
+    special.push(field('Preço (R$)','pp-'+id,h('input',{type:'text',id:'pp-'+id,inputmode:'decimal',value:priceText(p.price),oninput:function(e){p.price=parsePrice(e.target.value);meta.price();touch();}})));
+  }
+
+  return h('div',{class:'aedit'},
+    h('div',{class:'fields'},
+      field('Nome','pn-'+id,h('input',{type:'text',id:'pn-'+id,value:p.name,oninput:function(e){p.name=e.target.value;meta.name();touch();}})),
+      field('Categoria','pc-'+id,h('input',{type:'text',id:'pc-'+id,list:'cats',value:p.cat||'',oninput:function(e){p.cat=e.target.value;touch();}})),
+      field('Selo (opcional)','pb-'+id,h('input',{type:'text',id:'pb-'+id,value:p.badge||'',placeholder:'Ex.: Novo, Natal',oninput:function(e){p.badge=e.target.value;touch();}}),
+        'Aparece no canto da foto ou do ícone.')),
+    field('Descrição','pd-'+id,h('textarea',{id:'pd-'+id,rows:'3',oninput:function(e){p.desc=e.target.value;touch();}},p.desc||'')),
+    special,
+    h('label',{class:'check'},h('input',{type:'checkbox',id:'po-'+id,checked:p.on,onchange:function(e){p.on=e.target.checked;meta.name();touch();}}),'Disponível na vitrine'),
+    h('div',{class:'field'},h('label',{for:'pf-'+id},'Foto'),file,
+      p.img?h('div',{class:'actions'},h('button',{class:'btn ghost sm',type:'button',onclick:function(){p.img='';touch();renderMain();}},'Remover foto')):null,
+      photoMsg),
+    h('div',{class:'actions'},del,armedDelete===id?h('button',{class:'btn ghost sm',type:'button',onclick:function(){armedDelete=null;renderMain();}},'Cancelar'):null));
+}
+
+/* Linha resumida de um produto no Painel: miniatura, nome, preço, setas e "Editar" */
+function adminRow(p,i){
+  var nameEl=h('strong',null,p.name||'Produto sem nome');
+  var priceEl=h('span',null,priceSummary(p));
+  var stateEl=h('span',null);
+  function upName(){nameEl.textContent=p.name||'Produto sem nome';stateEl.textContent='';if(!p.on) stateEl.append(h('span',{class:'pill'},'Oculto'));}
+  function upPrice(){priceEl.textContent=priceSummary(p);}
+  upName();
+  var meta={name:upName,price:upPrice};                          // permite o editor atualizar esta linha enquanto digita
+  var img=safeImg(p.img);
+  var isOpen=openEditor===p.id;
+  var head=h('div',{class:'arow-head'},
+    h('div',{class:'thumb'},img?h('img',{src:img,alt:''}):h('span',{class:'ico',html:iconFor(p)})),
+    h('div',{class:'ainfo'},nameEl,h('span',{class:'muted small'},priceEl,' ',p.badge?h('span',{class:'pill'},p.badge):null,' ',stateEl)),
+    h('div',{class:'aact'},
+      h('button',{class:'btn ghost sm',type:'button','aria-label':'Subir '+p.name,disabled:i===0?true:null,onclick:function(){move(i,-1);}},'↑'),
+      h('button',{class:'btn ghost sm',type:'button','aria-label':'Descer '+p.name,disabled:i===state.products.length-1?true:null,onclick:function(){move(i,1);}},'↓'),
+      h('button',{class:'btn sm',type:'button','aria-expanded':String(isOpen),onclick:function(){
+        openEditor=isOpen?null:p.id;armedDelete=null;renderMain();
+      }},isOpen?'Fechar':'Editar')));
+  return h('div',{class:'arow'},head,isOpen?editor(p,i,meta):null);
+}
+
+/* Tela do Painel: avisos, bloco de configurações e lista de produtos */
+function viewPainel(){
+  var s=state.settings;
+  var out=[];
+  out.push(h('section',{class:'intro'},h('h1',null,'Painel da confeiteira'),
+    h('p',null,'Altere produtos, preços, fotos e configurações. As mudanças só aparecem para os clientes depois de Salvar e publicar.')));
+  if(!waDigits()) out.push(h('div',{class:'notice warn',role:'note'},'Informe o WhatsApp abaixo. Sem ele, o cliente precisa escolher a conversa sozinho ao enviar o pedido.'));
+
+  out.push(h('section',{class:'panel'},h('h2',null,'Configurações'),
+    h('div',{class:'fields'},
+      field('Nome na barra superior','s-name',h('input',{type:'text',id:'s-name',value:s.name,oninput:function(e){s.name=e.target.value;touch();}})),
+      field('WhatsApp da confeiteira','s-wa',h('input',{type:'tel',id:'s-wa',inputmode:'tel',placeholder:'(19) 99999-9999',value:s.whatsapp,oninput:function(e){s.whatsapp=e.target.value;touch();}}),'Com DDD. É para esse número que o pedido é enviado.'),
+      field('Antecedência mínima (dias)','s-lead',h('input',{type:'number',id:'s-lead',min:'0',max:'60',value:String(s.leadDays),oninput:function(e){s.leadDays=Math.max(0,parseInt(e.target.value,10)||0);touch();}})),
+      field('Endereço ou bairro','s-loc',h('input',{type:'text',id:'s-loc',value:s.location||'',oninput:function(e){s.location=e.target.value;touch();}})),
+      field('Link da loja no iFood','s-ifood',h('input',{type:'text',id:'s-ifood',inputmode:'url',placeholder:'https://www.ifood.com.br/...',value:s.ifood||'',oninput:function(e){s.ifood=e.target.value.trim();touch();}}),'Deixe vazio para esconder o botão. Precisa começar com https://')),
+    field('Períodos de entrega ou retirada','s-slots',h('textarea',{id:'s-slots',rows:'3',oninput:function(e){
+      s.slots=e.target.value.split('\n').map(function(x){return x.trim();}).filter(Boolean);touch();
+    }},(s.slots||[]).join('\n')),'Um por linha.'),
+    field('Aviso na vitrine (opcional)','s-notice',h('textarea',{id:'s-notice',rows:'2',oninput:function(e){s.notice=e.target.value;touch();}},s.notice||''),'Ex.: Encomendas de Natal até 20/12.')));
+
+  var dl=h('datalist',{id:'cats'},categories(state.products).map(function(c){return h('option',{value:c});}));   // sugestões de categoria
+  out.push(h('section',{class:'panel'},h('h2',null,'Produtos'),
+    h('div',{class:'actions'},h('button',{class:'btn',type:'button',onclick:function(){        // novo produto (preço único) entra no topo da lista
+      var p={id:newId(),kind:'simples',name:'',desc:'',price:0,cat:'',badge:'',on:true,img:''};
+      state.products.unshift(p);openEditor=p.id;touch();renderMain();
+    }},'Adicionar produto')),
+    dl,
+    state.products.length?h('div',{class:'sec'},state.products.map(adminRow)):h('p',{class:'muted'},'Nenhum produto ainda.')));
+  return out;
+}
+
+/* ---------- 4.10 Salvar e publicar ----------
+   Para publicar, o site monta uma cópia completa de si mesmo (HTML + CSS + JS + dados
+   atualizados) e entrega à plataforma. O visual e o código são lidos das próprias
+   blocos style (id="css") e script (id="app") — por isso essas duas tags precisam
+   manter esses ids. */
+function buildDoc(s){
+  var css=document.getElementById('css').textContent;
+  var app=document.getElementById('app').textContent;
+  var json=JSON.stringify(s).replace(/</g,'\\u003c');            // protege o JSON dentro do HTML
+  return '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>'+RESET+'</style></head><body>'+
+    '<title>'+TITULO+'</title><meta name="claude:viewport-fit-sides" content="cover">'+
+    '<link rel="stylesheet" href="'+FONT_HREF+'">'+
+    '<style id="css">'+css+'</style><div id="root"></div>'+
+    '<'+'script type="application/json" id="state">'+json+SC+
+    '<'+'script id="app">'+app+SC+'</body></html>';
+}
+
+/* Clique em "Salvar e publicar": envia a nova versão e mostra o resultado.
+   Quando dá certo, a página recarrega sozinha já com os dados novos. */
+function save(){
+  if(saving) return;
+  if(!artifactApi){saveMsg='Salvar não está disponível nesta visualização.';renderSaveBar();return;}
+  var next=JSON.parse(JSON.stringify(state));
+  saving=true;saveMsg='';renderSaveBar();
+  artifactApi.publish(buildDoc(next)).then(function(){
+    state=next;saved=JSON.stringify(state);saveMsg='Publicado. Atualizando a página...';saving=false;renderSaveBar();
+  },function(e){
+    saving=false;
+    var c=e&&e.code;                                             // traduz o motivo da falha em mensagem
+    if(c==='conflict') saveMsg='Outra versão foi publicada enquanto você editava. A página vai recarregar; refaça a alteração.';
+    else if(c==='not_writer'||c==='not_granted'||c==='consent_required'||c==='capability_disabled'||c==='not_declared') saveMsg='Esta visualização é somente de leitura. Peça permissão de edição para quem criou o site.';
+    else if(c==='too_large') saveMsg='O site ficou grande demais. Troque as fotos por imagens menores ou remova algumas.';
+    else if(c==='rate_limited') saveMsg='Muitas publicações seguidas. Aguarde um instante e tente de novo.';
+    else saveMsg='Não foi possível publicar agora. Tente de novo.';
+    renderSaveBar();
+  });
+}
+
+/* Barra fixa embaixo da tela: aparece só para quem edita e só quando há algo a salvar */
+function renderSaveBar(){
+  var old=root.querySelector('#savebar');
+  var show=canEdit&&(dirty()||saving||saveMsg);
+  if(!show){if(old) old.remove();return;}
+  var bar=h('div',{class:'savebar',id:'savebar',role:'region','aria-label':'Salvar alterações'},
+    h('p',{role:'status'},saveMsg||(dirty()?'Alterações não publicadas.':'')),
+    h('div',{class:'actions'},
+      dirty()&&!saving?h('button',{class:'btn ghost sm',type:'button',onclick:function(){          // volta ao último estado publicado
+        state=JSON.parse(saved);saveMsg='';armedDelete=null;ui={};render();
+      }},'Descartar'):null,
+      h('button',{class:'btn',type:'button',disabled:(!dirty()||saving)?true:null,onclick:save},saving?'Publicando...':'Salvar e publicar')));
+  if(old) old.replaceWith(bar);else root.append(bar);
+}
+
+/* ---------- 4.11 Montagem da tela e inicialização ---------- */
+
+/* Escolhe qual tela mostrar de acordo com a aba aberta */
+function view(){
+  if(tab==='agendar') return viewAgendar();
+  if(tab==='painel'&&canEdit) return viewPainel();
+  return viewProdutos();
+}
+
+/* Redesenha só o miolo da página (mantém barra superior e rodapé) */
+function renderMain(){
+  var m=root.querySelector('main');
+  if(!m){render();return;}
+  m.textContent='';
+  [].concat(view()).forEach(function(n){m.append(n);});
+}
+
+/* Redesenha a página inteira: barra superior + miolo + rodapé + barra de salvar */
+function render(){
+  root.textContent='';
+  root.append(header(),h('main',{class:'wrap main',id:'main'},view()),footer());
+  renderSaveBar();
+}
+
+/* Início: desenha a vitrine para todo mundo e, em seguida, pergunta à plataforma
+   se quem está vendo pode editar. Se puder, a aba Painel aparece. */
+function init(){
+  route();
+  if(!root.firstChild) render();
+  if(!window.claude||!window.claude.use) return;                 // fora do Claude: só vitrine e agendamento
+  Promise.all([window.claude.use('user'),window.claude.use('artifact')]).then(function(r){
+    artifactApi=r[1]||null;
+    return r[0]?r[0].canEdit():false;
+  }).then(function(ok){
+    canEdit=!!ok&&!!artifactApi;
+    if(canEdit){tab=(location.hash==='#painel')?'painel':tab;render();}
+  }).catch(function(){});
+}
+init();
+})();
+</script></body></html></body></html>
